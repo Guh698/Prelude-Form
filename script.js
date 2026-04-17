@@ -195,6 +195,34 @@ questionGroups.forEach((group, index) => {
 
           if (response.ok) {
             console.log("Success! Data perfectly sent to Notion.");
+            const thankYouBox = document.getElementById("thankYouMessage");
+            const thankYouTitle = thankYouBox.querySelector("h2");
+            const thankYouSub = thankYouBox.querySelector("p");
+
+            gsap.set(thankYouBox, { display: "flex", opacity: 1 });
+
+            let splitTitle = new SplitText(thankYouTitle, { type: "chars" });
+
+            gsap.set(splitTitle.chars, { opacity: 0, y: 30 });
+            gsap.set(thankYouSub, { opacity: 0, y: 15 });
+
+            let tl = gsap.timeline();
+            tl.to(splitTitle.chars, {
+              opacity: 1,
+              y: 0,
+              stagger: 0.08,
+              duration: 1.5,
+              ease: "power3.out",
+            }).to(
+              thankYouSub,
+              {
+                opacity: 1,
+                y: 0,
+                duration: 1.5,
+                ease: "power2.out",
+              },
+              "-=1",
+            );
           } else {
             console.error("Error: Backend rejected the data.");
           }
