@@ -10,11 +10,11 @@ exports.handler = async (event) => {
     Espaco: { rich_text: [{ text: { content: data.espaco || "" } }] },
     Iluminacao: { rich_text: [{ text: { content: data.iluminacao || "" } }] },
     Aroma: { rich_text: [{ text: { content: data.aroma || "" } }] },
-    Jantar: { rich_text: [{ text: { content: data.aroma || "" } }] },
-    Adjetivos: { rich_text: [{ text: { content: data.aroma || "" } }] },
-    Sensacao: { rich_text: [{ text: { content: data.aroma || "" } }] },
-    Memoria: { rich_text: [{ text: { content: data.aroma || "" } }] },
-    Tendencia: { rich_text: [{ text: { content: data.aroma || "" } }] },
+    Jantar: { rich_text: [{ text: { content: data.jantar || "" } }] },
+    Adjetivos: { rich_text: [{ text: { content: data.adjetivos || "" } }] },
+    Sensacao: { rich_text: [{ text: { content: data.sensacao || "" } }] },
+    Memoria: { rich_text: [{ text: { content: data.memoria || "" } }] },
+    Tendencia: { rich_text: [{ text: { content: data.tendencia || "" } }] },
   };
 
   const response = await fetch("https://api.notion.com/v1/pages", {

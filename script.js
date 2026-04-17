@@ -171,15 +171,15 @@ questionGroups.forEach((group, index) => {
       const allInputs = document.querySelectorAll("#notionForm input");
 
       const formData = {
-        Nome: allInputs[0].value,
-        Espaco: allInputs[1].value,
-        Iluminacao: allInputs[2].value,
-        Aroma: allInputs[3].value,
-        Jantar: allInputs[4].value,
-        Adjetivos: allInputs[5].value,
-        Sensacao: allInputs[6].value,
-        Memoria: allInputs[7].value,
-        Tendencia: allInputs[8].value,
+        nome: allInputs[0].value,
+        espaco: allInputs[1].value,
+        iluminacao: allInputs[2].value,
+        aroma: allInputs[3].value,
+        jantar: allInputs[4].value,
+        adjetivos: allInputs[5].value,
+        sensacao: allInputs[6].value,
+        memoria: allInputs[7].value,
+        tendencia: allInputs[8].value,
       };
 
       console.log("Data ready for Notion API:", formData);
