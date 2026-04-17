@@ -1,0 +1,92 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  font-family: "Bodoni Moda", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-weight: 500;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+:root {
+  --white: #f9f7e0ff;
+  --dark-color: #040422;
+  --white-grey: #828696;
+}
+
+body {
+  background-color: var(--dark-color);
+  color: var(--white);
+}
+
+.hero {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+#notionForm {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.input-group {
+  position: absolute;
+  display: flex;
+  gap: 7rem;
+  width: 50%;
+  flex-direction: column;
+  justify-content: space-between;
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+}
+
+label {
+  font-size: 3rem;
+  line-height: 1.3;
+}
+
+input {
+  border: none;
+  border-bottom: 0.1rem solid var(--white);
+  background-color: transparent;
+  outline: none;
+  color: var(--white);
+  padding: 2.3rem 0;
+  font-size: 3rem;
+}
+
+.next-question-button {
+  opacity: 1;
+  pointer-events: auto;
+  padding: 0.7rem 0;
+  font-size: 1.6rem;
+  width: 25%;
+}
+
+button {
+  opacity: 0;
+  pointer-events: none;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+}
