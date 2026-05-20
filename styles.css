@@ -19,6 +19,10 @@ html {
   --white: #f9f7e0ff;
   --dark-color: #040422;
   --white-grey: #828696;
+  --title-font-size: clamp(12rem, calc(-0.33rem + 9.03vw), 17rem);
+  --medium-font-size: clamp(2rem, calc(0.53rem + 1.81vw), 4rem);
+  --medium-small-font-size: clamp(1.6rem, calc(-0.37rem + 1.44vw), 2.4rem);
+  --small-font-size: clamp(1.4rem, calc(-0.08rem + 1.08vw), 2rem);
 }
 
 canvas {
@@ -38,7 +42,45 @@ body {
 
 .hero {
   height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
+}
+
+.starting-point-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.starting-point {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 50%;
+}
+
+h1 {
+  font-size: var(--title-font-size);
+}
+
+.starting-point span {
+  font-size: var(--small-font-size);
+  padding: 1rem;
+  font-family: "Figtree", sans-serif;
+  border: 0.1rem solid var(--white);
+  opacity: 0;
 }
 
 #notionForm {
@@ -64,7 +106,7 @@ body {
 }
 
 label {
-  font-size: 3rem;
+  font-size: var(--medium-font-size);
   line-height: 1.3;
 }
 
@@ -74,21 +116,27 @@ input {
   background-color: transparent;
   outline: none;
   color: var(--white);
-  padding: 2.3rem 0;
-  font-size: 3rem;
+  padding: 1.7rem 0;
+  font-size: var(--medium-font-size);
 }
 
-.next-question-button {
-  opacity: 1;
-  pointer-events: auto;
-  padding: 0.7rem 0;
-  font-size: 1.6rem;
-  width: 25%;
+input::placeholder {
+  font-size: var(--medium-font-size);
 }
 
 button {
-  opacity: 0;
-  pointer-events: none;
+  opacity: 1;
+  pointer-events: auto;
+  padding: 0.7rem 0;
+  font-size: var(--medium-small-font-size);
+  width: 25%;
+  outline: none;
+  border-radius: 0;
+  border: none;
+}
+
+.thank-you-message h2 {
+  font-size: clamp(7rem, 5.12vw, 11rem);
 }
 
 .thank-you-message {
@@ -97,9 +145,40 @@ button {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  opacity: 0;
   pointer-events: none;
   display: none;
   flex-direction: column;
   gap: 1.5rem;
+  font-size: var(--medium-small-font-size);
+  opacity: 0;
+}
+
+@media (min-width: 1920px) {
+  .starting-point {
+    height: 30%;
+  }
+}
+
+@media (max-width: 1280px) {
+}
+
+@media (max-width: 1024px) {
+  .input-group {
+    gap: 7rem;
+    width: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --title-font-size: clamp(4.5rem, 8vw, 11rem);
+  }
+
+  button {
+    padding: 0.7rem 0;
+    width: auto;
+  }
+}
+
+@media (max-width: 480px) {
 }

@@ -87,7 +87,201 @@ function muteWithEase() {
   bgMusic2.fade(currentVol, 0.0, 300);
 }
 
-/*document.addEventListener("visibilitychange", () => {
+function runningPreludeForm() {
+  const questionGroups = document.querySelectorAll(".input-group");
+  let currentIndex = 0;
+
+  function animateIn(group) {
+    const label = group.querySelector("label");
+    const input = group.querySelector("input");
+    const btn = group.querySelector("button");
+
+    gsap.set(group, { display: "flex", opacity: 1, pointerEvents: "auto" });
+
+    let split = new SplitText(label, { type: "words, chars" });
+
+    gsap.set(split.chars, { opacity: 0 });
+    gsap.set([input, btn], { opacity: 0 });
+
+    let tl = gsap.timeline();
+    tl.to(split.chars, {
+      opacity: 1,
+      stagger: { amount: 0.7 },
+      duration: 2.7,
+      ease: "power1.inOut",
+    })
+      .to(
+        input,
+        {
+          opacity: 1,
+          ease: "power1.inOut",
+          duration: 2.7,
+        },
+        "-=2.5",
+      )
+      .to(
+        btn,
+        {
+          opacity: 1,
+          duration: 2.7,
+          ease: "power1.inOut",
+        },
+        "-=2.5",
+      );
+  }
+
+  function animateOut(group, onCompleteCallback) {
+    gsap.to(group, {
+      opacity: 0,
+      duration: 1,
+      ease: "power1.inOut",
+      onComplete: () => {
+        gsap.set(group, { display: "none", pointerEvents: "none" });
+        if (onCompleteCallback) onCompleteCallback();
+      },
+    });
+  }
+
+  questionGroups.forEach((group, index) => {
+    const btn = group.querySelector("button");
+
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      const input = group.querySelector("input");
+      if (!input.value.trim()) {
+        return;
+      }
+
+      const isLastQuestion = index === questionGroups.length - 1;
+
+      if (isLastQuestion) {
+        const allInputs = document.querySelectorAll("#notionForm input");
+
+        const formData = {
+          nome: allInputs[0].value,
+          espaco: allInputs[1].value,
+          iluminacao: allInputs[2].value,
+          aroma: allInputs[3].value,
+          jantar: allInputs[4].value,
+          adjetivos: allInputs[5].value,
+          sensacao: allInputs[6].value,
+          memoria: allInputs[7].value,
+          tendencia: allInputs[8].value,
+        };
+
+        console.log("Data ready for Notion API:", formData);
+
+        animateOut(group, async () => {
+          console.log("Form complete. Triggering Notion API...");
+
+          try {
+            const response = await fetch("/.netlify/functions/submit-form", {
+              method: "POST",
+              body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+              const thankYouBox = document.getElementById("thankYouMessage");
+              const thankYouTitle = thankYouBox.querySelector("h2");
+              const thankYouSub = thankYouBox.querySelector("p");
+
+              gsap.set(thankYouBox, { display: "flex", opacity: 1 });
+
+              let splitTitle = new SplitText(thankYouTitle, { type: "chars" });
+
+              gsap.set(splitTitle.chars, { opacity: 0, y: 30 });
+              gsap.set(thankYouSub, { opacity: 0, y: 15 });
+
+              let tl = gsap.timeline();
+              tl.to(splitTitle.chars, {
+                opacity: 1,
+                y: 0,
+                stagger: 0.08,
+                duration: 1.5,
+                ease: "power3.out",
+              }).to(
+                thankYouSub,
+                {
+                  opacity: 1,
+                  y: 0,
+                  duration: 1.5,
+                  ease: "power2.out",
+                },
+                "-=1",
+              );
+            } else {
+              console.error("Error: Backend rejected the data.");
+            }
+          } catch (error) {
+            console.error("Error: Something went wrong with the fetch.", error);
+          }
+        });
+      } else {
+        animateOut(group, () => {
+          animateIn(questionGroups[index + 1]);
+        });
+      }
+    });
+  });
+
+  animateIn(questionGroups[0]);
+}
+
+function startingExperience() {
+  const startingTarget = document.getElementById("experience_target");
+  const startingTitle = document.getElementById("starting_point_title");
+  let split = new SplitText(startingTitle, { type: "words, chars" });
+
+  gsap.set(split.chars, { opacity: 0 });
+  gsap.set(startingTarget, { opacity: 1, pointerEvents: "auto" });
+
+  let tl = gsap.timeline();
+  tl.to(split.chars, {
+    opacity: 1,
+    stagger: { amount: 0.7 },
+    duration: 2.7,
+    delay: 0.3,
+    ease: "power1.inOut",
+  });
+  tl.to(
+    ".starting-point span",
+    {
+      opacity: 1,
+      duration: 2.7,
+      ease: "power1.inOut",
+    },
+    "-=2.7",
+  );
+
+  startingTarget.addEventListener("click", () => {
+    gsap.set(startingTarget, { pointerEvents: "none" });
+    playAndFadeIn();
+
+    let tl = gsap.timeline({
+      onComplete() {
+        runningPreludeForm();
+      },
+    });
+    tl.to(split.chars, {
+      opacity: 0,
+      stagger: { amount: 0.7 },
+      duration: 2.7,
+      ease: "power1.inOut",
+    });
+    tl.to(
+      ".starting-point span",
+      {
+        opacity: 0,
+        duration: 2.7,
+        ease: "power1.inOut",
+      },
+      "-=2.7",
+    );
+  });
+}
+
+document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     bgMusic.pause();
     bgMusic2.pause();
@@ -95,147 +289,7 @@ function muteWithEase() {
     bgMusic.play();
     bgMusic2.play();
   }
-});*/
-
-pageNoise();
-playAndFadeIn();
-
-const questionGroups = document.querySelectorAll(".input-group");
-let currentIndex = 0;
-
-function animateIn(group) {
-  const label = group.querySelector("label");
-  const input = group.querySelector("input");
-  const btn = group.querySelector("button");
-
-  gsap.set(group, { display: "flex", opacity: 1, pointerEvents: "auto" });
-
-  let split = new SplitText(label, { type: "words, chars" });
-
-  gsap.set(split.chars, { opacity: 0 });
-  gsap.set([input, btn], { opacity: 0 });
-
-  let tl = gsap.timeline();
-  tl.to(split.chars, {
-    opacity: 1,
-    stagger: { amount: 0.7 },
-    duration: 2.7,
-    ease: "power1.inOut",
-  })
-    .to(
-      input,
-      {
-        opacity: 1,
-        ease: "power1.inOut",
-        duration: 2.7,
-      },
-      "-=2.5",
-    )
-    .to(
-      btn,
-      {
-        opacity: 1,
-        duration: 2.7,
-        ease: "power1.inOut",
-      },
-      "-=2.5",
-    );
-}
-
-function animateOut(group, onCompleteCallback) {
-  gsap.to(group, {
-    opacity: 0,
-    duration: 1,
-    ease: "power1.inOut",
-    onComplete: () => {
-      gsap.set(group, { display: "none", pointerEvents: "none" });
-      if (onCompleteCallback) onCompleteCallback();
-    },
-  });
-}
-
-questionGroups.forEach((group, index) => {
-  const btn = group.querySelector("button");
-
-  btn.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    const input = group.querySelector("input");
-    if (!input.value.trim()) {
-      return;
-    }
-
-    const isLastQuestion = index === questionGroups.length - 1;
-
-    if (isLastQuestion) {
-      const allInputs = document.querySelectorAll("#notionForm input");
-
-      const formData = {
-        nome: allInputs[0].value,
-        espaco: allInputs[1].value,
-        iluminacao: allInputs[2].value,
-        aroma: allInputs[3].value,
-        jantar: allInputs[4].value,
-        adjetivos: allInputs[5].value,
-        sensacao: allInputs[6].value,
-        memoria: allInputs[7].value,
-        tendencia: allInputs[8].value,
-      };
-
-      console.log("Data ready for Notion API:", formData);
-
-      animateOut(group, async () => {
-        console.log("Form complete. Triggering Notion API...");
-
-        try {
-          const response = await fetch("/.netlify/functions/submit-form", {
-            method: "POST",
-            body: JSON.stringify(formData),
-          });
-
-          if (response.ok) {
-            console.log("Success! Data perfectly sent to Notion.");
-            const thankYouBox = document.getElementById("thankYouMessage");
-            const thankYouTitle = thankYouBox.querySelector("h2");
-            const thankYouSub = thankYouBox.querySelector("p");
-
-            gsap.set(thankYouBox, { display: "flex", opacity: 1 });
-
-            let splitTitle = new SplitText(thankYouTitle, { type: "chars" });
-
-            gsap.set(splitTitle.chars, { opacity: 0, y: 30 });
-            gsap.set(thankYouSub, { opacity: 0, y: 15 });
-
-            let tl = gsap.timeline();
-            tl.to(splitTitle.chars, {
-              opacity: 1,
-              y: 0,
-              stagger: 0.08,
-              duration: 1.5,
-              ease: "power3.out",
-            }).to(
-              thankYouSub,
-              {
-                opacity: 1,
-                y: 0,
-                duration: 1.5,
-                ease: "power2.out",
-              },
-              "-=1",
-            );
-          } else {
-            console.error("Error: Backend rejected the data.");
-          }
-        } catch (error) {
-          console.error("Error: Something went wrong with the fetch.", error);
-        }
-      });
-    } else {
-      animateOut(group, () => {
-        animateIn(questionGroups[index + 1]);
-      });
-    }
-  });
 });
 
-animateIn(questionGroups[0]);
+pageNoise();
+startingExperience();
