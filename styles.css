@@ -146,7 +146,7 @@ button {
   transform: translate(-50%, -50%);
   text-align: center;
   pointer-events: none;
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 1.5rem;
   font-size: var(--medium-small-font-size);
